@@ -22,6 +22,7 @@ namespace GridRelayListener
     using System.IO;
     using System.ServiceModel;
     using System.ServiceModel.Web;
+    using System.Text;
     using Microsoft.ServiceBus;
     using Newtonsoft.Json.Linq;
 
@@ -82,16 +83,14 @@ namespace GridRelayListener
             AzureEventGridEvent[] events = AzureEventGridEvent.DeserializeAzureEventGridEvents(body);
 
             // If event received is a SubscriptionValidationEvent, handle it appropriately
-            if (events.Length == 1 && events[0].EventType == "Microsoft.EventGrid/SubscriptionValidationEvent")
+            if (events.Length == 1 && events[0].EventType == "Microsoft.EventGrid.SubscriptionValidationEvent")
             {
                 // For a validation event, return the cookie embedded in the data.validationCode field.
                 return ValidationResponseStream(WebOperationContext.Current, events[0]);
             }
-            else
-            {
-                // For any event which is not a SubscriptionValidateEvent, just return 200 - Got It
-                return GotItStream(WebOperationContext.Current);
-            }
+
+            // For any event which is not a SubscriptionValidateEvent, just return 200 - Got It
+            return GotItStream(WebOperationContext.Current);
         }
 
         void PrintRequest(WebOperationContext ctx, string body)
@@ -118,7 +117,7 @@ namespace GridRelayListener
             string validationCode = (string)((JObject)validationEvent.Data)["validationCode"];
             ctx.OutgoingResponse.ContentType = "application/json";
             string responseBody = "{\"validationResponse\": \"" + validationCode + "\"}";
-            Stream output = new MemoryStream(System.Text.UTF8Encoding.UTF8.GetBytes(responseBody));
+            Stream output = new MemoryStream(Encoding.UTF8.GetBytes(responseBody));
             output.Position = 0;
             return output;
         }
@@ -126,7 +125,7 @@ namespace GridRelayListener
         Stream GotItStream(WebOperationContext ctx)
         {
             ctx.OutgoingResponse.ContentType = "text/plain";
-            Stream output = new MemoryStream(System.Text.UTF8Encoding.UTF8.GetBytes("Got it"));
+            Stream output = new MemoryStream(Encoding.UTF8.GetBytes("Got it"));
             output.Position = 0;
             return output;
         }
