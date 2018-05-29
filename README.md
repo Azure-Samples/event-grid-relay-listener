@@ -24,8 +24,8 @@ This project framework provides the following features:
     Setting | Value
     ------------ | -------------
     Name | gridservicelistener
-    RelayType | Http
-    Requires Client Authorization | False
+    Relay Type | Http
+    Requires Client Authorization | Unchecked (False)
 
 3. Set the following values in GridRelayListener Program.cs:
     * `"<yourServiceBusNamespace>"` with the Relay namespace you just created.
