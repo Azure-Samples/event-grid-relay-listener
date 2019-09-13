@@ -1,3 +1,13 @@
+---
+page_type: sample
+languages:
+- csharp
+products:
+- azure
+description: "The sample shows you how to use Azure Relay to listen to Azure Event Grid events directly on your console."
+urlFragment: event-grid-relay-listener
+---
+
 # Event Grid Relay listener
 
 The sample shows you how to use Azure Relay to listen to Azure Event Grid events directly on your console. Send events from any Event Publisher to your relay endpoint and stream them real time to your console for monitoring or app orchestration.
